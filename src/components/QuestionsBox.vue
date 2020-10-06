@@ -84,6 +84,11 @@ export default {
       return this.$store.getters.getQuestions;
     }
   },
+  mounted() {
+    this.questions.forEach(element => {
+      element.answered = false;
+    });
+  },
   methods: {
     next_question() {
       this.index++;
@@ -113,6 +118,15 @@ export default {
         this.$store.dispatch("INCORRECT_QUESTIONS");
       }
       this.$store.dispatch("ANSWERED", this.index);
+      let all_visited = true;
+      this.questions.forEach(element => {
+        if (element.answered === false) all_visited = false;
+      });
+      if (all_visited === true) {
+        setTimeout(() => {
+          this.$router.push({ name: "Finish" });
+        }, 2000);
+      }
     },
     answerClass(i) {
       let answerClass = "";
